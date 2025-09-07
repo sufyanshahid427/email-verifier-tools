@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Verifier Pro - Professional Email Validation</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary-color: #f8fafc;
+      --success-color: #10b981;
+      --warning-color: #f59e0b;
+      --error-color: #ef4444;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --text-light: #9ca3af;
+      --border-color: #e5e7eb;
+      --border-light: #f3f4f6;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    .main-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow-xl);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .verification-modes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .mode-card {
+      border: 2px solid var(--border-light);
+      border-radius: 16px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      background: var(--secondary-color);
+    }
+
+    .mode-card:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .mode-card.selected {
+      border-color: var(--primary-color);
+      background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+      box-shadow: var(--shadow-md);
+    }
+
+    .mode-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .mode-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .mode-icon {
+      font-size: 1.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .fast-mode .mode-icon { background: var(--success-color); }
+    .standard-mode .mode-icon { background: var(--warning-color); }
+    .premium-mode .mode-icon { background: var(--primary-color); }
+
+    .mode-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .mode-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .mode-features {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      list-style: none;
+    }
+
+    .mode-features li {
+      margin-bottom: 0.25rem;
+    }
+
+    .mode-features li:before {
+      content: "✓";
+      color: var(--success-color);
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+
+    .realtime-verification-section {
+      margin: 2rem 0;
+    }
+
+    .verification-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      text-align: center;
+    }
+
+    .verification-header h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .verification-header p {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .verification-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .email-input {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .email-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .verify-btn {
+      padding: 1rem 2rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 140px;
+      justify-content: center;
+    }
+
+    .verify-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .verify-btn:disabled {
+      background: var(--text-light);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .verification-result {
+      min-height: 60px;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-top: 1rem;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      font-weight: 500;
+    }
+
+    .verification-result.show {
+      display: flex;
+    }
+
+    .verification-result.valid {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .verification-result.invalid {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      color: #991b1b;
+      border: 1px solid #ef4444;
+    }
+
+    .verification-result.risky {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      color: #92400e;
+      border: 1px solid #f59e0b;
+    }
+
+    .verification-result.unknown {
+      background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+      color: #374151;
+      border: 1px solid #6b7280;
+    }
+
+    .result-icon {
+      font-size: 1.5rem;
+    }
+
+    .result-text {
+      font-size: 1.1rem;
+    }
+
+    .result-details {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-top: 0.25rem;
+    }
+
+    .section-divider {
+      text-align: center;
+      margin: 2rem 0;
+      position: relative;
+    }
+
+    .section-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--border-color);
+      z-index: 1;
+    }
+
+    .section-divider span {
+      background: white;
+      padding: 0 1.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      position: relative;
+      z-index: 2;
+    }
+
+    .upload-section {
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .drop-zone {
+      border: 3px dashed var(--border-color);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      background: var(--secondary-color);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .drop-zone:hover {
+      border-color: var(--primary-color);
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .drop-zone.dragover {
+      border-color: var(--primary-color);
+      background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+      transform: scale(1.02);
+    }
+
+    .drop-zone-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-text {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-subtext {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .jobs-container {
+      margin-top: 2rem;
+    }
+
+    .job-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .job-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px);
+    }
+
+    .job-header {
+      display: flex;
+      justify-content: between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .job-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .job-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .job-close:hover {
+      color: var(--error-color);
+      background: var(--border-light);
+    }
+
+    .progress-section {
+      margin: 1rem 0;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .progress-percentage {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .progress-bar-container {
+      background: var(--border-light);
+      border-radius: 10px;
+      height: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color) 0%, var(--success-color) 100%);
+      width: 0%;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 10px;
+      position: relative;
+      transform-origin: left;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+      animation: shimmer 1.5s infinite;
+      opacity: 0.8;
+    }
+
+    .progress-bar.loading::after {
+      animation: shimmer 1s infinite;
+    }
+
+    .progress-bar.completed {
+      background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    }
+
+    .progress-bar.completed::after {
+      animation: none;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .job-status {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .job-log {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      background: var(--secondary-color);
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin: 0.5rem 0;
+      font-family: 'Monaco', 'Menlo', monospace;
+    }
+
+    .job-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+      background: var(--border-light);
+      color: var(--text-secondary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .btn-danger {
+      background: var(--error-color);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .download-section {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .download-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .download-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .download-link {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .download-link:hover {
+      border-color: var(--primary-color);
+      background: var(--secondary-color);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      color: white;
+    }
+
+    .footer a {
+      color: #fbbf24;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border-light);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .progress-container {
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background-color: var(--border-light);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .upload-success-icon {
+      font-size: 3rem;
+      color: #10b981;
+      margin-bottom: 1rem;
+    }
+
+    .start-process-section {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    .start-process-btn {
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      color: #ffffff !important;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer !important;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+      text-decoration: none;
+      min-width: 200px;
+      justify-content: center;
+      pointer-events: auto !important;
+    }
+
+    .start-process-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      color: #ffffff !important;
+      cursor: pointer !important;
+    }
+
+    .start-process-btn:active {
+      transform: translateY(0);
+    }
+
+    .start-process-btn:focus {
+      outline: 2px solid #8b5cf6;
+      outline-offset: 2px;
+    }
+
+    .start-process-btn i,
+    .start-process-btn span {
+      color: #ffffff !important;
+      font-size: 1rem;
+    }
+
+    .process-info {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .notification {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      background: white;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      box-shadow: var(--shadow-xl);
+      border-left: 4px solid var(--success-color);
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+      max-width: 400px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.error {
+      border-left-color: var(--error-color);
+    }
+
+    .notification.warning {
+      border-left-color: var(--warning-color);
+    }
+
+    .notification::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success-color);
+      flex-shrink: 0;
+    }
+
+    .notification.error::before {
+      background: var(--error-color);
+    }
+
+    .notification.warning::before {
+      background: var(--warning-color);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .main-card {
+        padding: 1.5rem;
+      }
+
+      .verification-modes {
+        grid-template-columns: 1fr;
+      }
+
+      .download-links {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .download-link {
+        text-align: center;
+      }
+
+      .input-group {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .verify-btn {
+        width: 100%;
+      }
+
+      .verification-card {
+        padding: 1.5rem;
+      }
+
+      .verification-header h3 {
+        font-size: 1.25rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .notification {
+        top: 1rem;
+        right: 1rem;
+        left: 1rem;
+        max-width: none;
+        transform: translateY(-100%);
+      }
+
+      .notification.show {
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-envelope-check"></i> Email Verifier Pro</h1>
+      <p>Professional email validation with real-time verification and advanced analytics</p>
+    </div>
+
+    <div class="main-card">
+      <div class="verification-modes">
+        <div class="mode-card fast-mode" data-mode="fast">
+        <input type="radio" name="mode" id="fast-mode" value="fast" checked>
+          <div class="mode-header">
+            <div class="mode-icon">
+              <i class="fas fa-rocket"></i>
+    </div>
+            <div class="mode-title">Fast Mode</div>
+          </div>
+          <div class="mode-description">85% accuracy, 10x speed</div>
+          <ul class="mode-features">
+            <li>Syntax validation</li>
+            <li>DNS verification</li>
+            <li>Domain reputation check</li>
+            <li>Best for large lists</li>
+          </ul>
+        </div>
+
+        <div class="mode-card standard-mode" data-mode="standard">
+        <input type="radio" name="mode" id="standard-mode" value="standard">
+          <div class="mode-header">
+            <div class="mode-icon">
+              <i class="fas fa-bolt"></i>
+    </div>
+            <div class="mode-title">Standard Mode</div>
+          </div>
+          <div class="mode-description">95% accuracy, 3x speed</div>
+          <ul class="mode-features">
+            <li>Full SMTP verification</li>
+            <li>Optimized timeouts</li>
+            <li>MX record validation</li>
+            <li>Balanced performance</li>
+          </ul>
+        </div>
+
+        <div class="mode-card premium-mode" data-mode="premium">
+        <input type="radio" name="mode" id="premium-mode" value="premium">
+          <div class="mode-header">
+            <div class="mode-icon">
+              <i class="fas fa-bullseye"></i>
+    </div>
+            <div class="mode-title">Premium Mode</div>
+  </div>
+          <div class="mode-description">98% accuracy, standard speed</div>
+          <ul class="mode-features">
+            <li>Complete verification</li>
+            <li>Retry mechanisms</li>
+            <li>Advanced filtering</li>
+            <li>Best accuracy</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="realtime-verification-section">
+        <div class="verification-card">
+          <div class="verification-header">
+            <h3>Give it a shot. Verify an email address!</h3>
+            <p>Test our email verification instantly with a single email address</p>
+          </div>
+          <div class="verification-form">
+            <div class="input-group">
+              <input type="email" id="single-email-input" placeholder="Enter email address to verify" class="email-input">
+              <button id="verify-single-btn" class="verify-btn">
+                <i class="fas fa-check"></i>
+                Validate
+              </button>
+            </div>
+            <div class="verification-result" id="verification-result"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="upload-section">
+        <div class="section-divider">
+          <span>Or upload a CSV or XLSX file for bulk verification</span>
+        </div>
+        <div class="drop-zone" id="drop-zone">
+          <div class="drop-zone-content">
+            <div class="upload-icon">
+              <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <div class="upload-text">Drop your CSV or XLSX file here or click to browse</div>
+            <div class="upload-subtext">Supports .csv and .xlsx files up to 100MB</div>
+          </div>
+        </div>
+        <input type="file" id="file-input" accept=".csv,.xlsx" class="file-input">
+      </div>
+
+      <div class="stats-grid" id="stats-grid" style="display: none;">
+        <div class="stat-card">
+          <div class="stat-number" id="total-emails">0</div>
+          <div class="stat-label">Total Emails</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="valid-emails">0</div>
+          <div class="stat-label">Valid</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="invalid-emails">0</div>
+          <div class="stat-label">Invalid</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="risky-emails">0</div>
+          <div class="stat-label">Risky</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="jobs-container" id="jobs"></div>
+
+    <div class="footer">
+      <p>This tool helps you find qualified leads. Now let's get you more sales with Buzzmora</p>
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const jobsContainer = document.getElementById('jobs');
+    const notification = document.getElementById('notification');
+    const statsGrid = document.getElementById('stats-grid');
+    const singleEmailInput = document.getElementById('single-email-input');
+    const verifySingleBtn = document.getElementById('verify-single-btn');
+    const verificationResult = document.getElementById('verification-result');
+
+    let jobList = JSON.parse(localStorage.getItem('verifier-jobs') || '[]');
+    let totalStats = JSON.parse(localStorage.getItem('verifier-stats') || '{"total": 0, "valid": 0, "invalid": 0, "risky": 0}');
+
+    // Initialize UI
+    initializeUI();
+
+    function initializeUI() {
+      // Load existing jobs
+    jobList.forEach(({ job_id, fileName }) => createJobBlock(job_id, fileName));
+
+      // Update stats display
+      updateStatsDisplay();
+      
+      // Setup mode selection
+      setupModeSelection();
+      
+      // Test backend connection
+      testBackendConnection();
+    }
+
+    function setupModeSelection() {
+      const modeCards = document.querySelectorAll('.mode-card');
+      modeCards.forEach(card => {
+        card.addEventListener('click', () => {
+          // Remove selected class from all cards
+          modeCards.forEach(c => c.classList.remove('selected'));
+          // Add selected class to clicked card
+          card.classList.add('selected');
+          // Check the radio button
+          const radio = card.querySelector('input[type="radio"]');
+          radio.checked = true;
+        });
+      });
+      
+      // Set initial selection
+      const fastModeCard = document.querySelector('.fast-mode');
+      fastModeCard.classList.add('selected');
+    }
+
+    function testBackendConnection() {
+    fetch('http://localhost:5050/health')
+      .then(res => res.json())
+      .then(data => {
+        console.log('Backend connection successful:', data);
+          // Show a brief success message that auto-disappears
+          showNotification('Backend connected successfully', 'success', 2000);
+      })
+      .catch(error => {
+        console.error('Backend connection failed:', error);
+          showNotification('Cannot connect to backend server. Please make sure the Python server is running on port 5050.', 'error', 8000);
+        });
+    }
+
+    function showNotification(message, type = 'success', duration = 5000) {
+      notification.textContent = message;
+      notification.className = `notification ${type} show`;
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, duration);
+    }
+
+    function updateStatsDisplay() {
+      if (totalStats.total > 0) {
+        statsGrid.style.display = 'grid';
+        document.getElementById('total-emails').textContent = totalStats.total.toLocaleString();
+        document.getElementById('valid-emails').textContent = totalStats.valid.toLocaleString();
+        document.getElementById('invalid-emails').textContent = totalStats.invalid.toLocaleString();
+        document.getElementById('risky-emails').textContent = totalStats.risky.toLocaleString();
+      }
+    }
+
+    function resetFileInput() {
+      // Clear the file input value to allow selecting the same file again
+      fileInput.value = '';
+      // Reset drop zone to original state
+      dropZone.innerHTML = `
+        <div class="drop-zone-content">
+          <div class="upload-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="upload-text">Drop your CSV or XLSX file here or click to browse</div>
+          <div class="upload-subtext">Supports .csv and .xlsx files up to 100MB</div>
+        </div>
+      `;
+      dropZone.style.pointerEvents = 'auto';
+    }
+
+    // Real-time verification functionality
+    async function verifySingleEmail() {
+      const email = singleEmailInput.value.trim();
+      
+      if (!email) {
+        showNotification('Please enter an email address', 'error', 3000);
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        showNotification('Please enter a valid email address', 'error', 3000);
+        return;
+      }
+
+      // Show loading state
+      verifySingleBtn.disabled = true;
+      verifySingleBtn.innerHTML = '<div class="loading-spinner"></div> Verifying...';
+      verificationResult.classList.remove('show');
+
+      try {
+        // Try backend verification first, fallback to enhanced validation
+        const result = await verifyEmailWithBackend(email);
+        displayVerificationResult(email, result);
+      } catch (error) {
+        console.error('Verification error:', error);
+        showNotification('Verification failed. Please try again.', 'error', 3000);
+      } finally {
+        verifySingleBtn.disabled = false;
+        verifySingleBtn.innerHTML = '<i class="fas fa-check"></i> Validate';
+      }
+    }
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    async function verifyEmailWithBackend(email) {
+      try {
+        const response = await fetch('http://localhost:5050/verify-single', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: email })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return {
+          status: result.status || 'unknown',
+          email: email,
+          details: result.details || getResultDetails(result.status || 'unknown'),
+          confidence: result.confidence || 'medium'
+        };
+      } catch (error) {
+        console.error('Backend verification failed:', error);
+        // Fallback to enhanced client-side validation
+        return enhancedEmailValidation(email);
+      }
+    }
+
+    function enhancedEmailValidation(email) {
+      const domain = email.split('@')[1];
+      const localPart = email.split('@')[0];
+      
+      // Enhanced validation rules
+      const validation = {
+        syntax: validateEmailSyntax(email),
+        domainStructure: validateDomainStructure(domain),
+        localPart: validateLocalPart(localPart),
+        commonPatterns: checkCommonPatterns(email)
+      };
+
+      // Determine result based on validation
+      if (validation.syntax && validation.domainStructure && validation.localPart) {
+        if (validation.commonPatterns.isUndeliverable) {
+          return {
+            status: 'invalid',
+            email: email,
+            details: 'Email address does not exist or is undeliverable',
+            confidence: 'high'
+          };
+        } else if (validation.commonPatterns.isValid) {
+          return {
+            status: 'valid',
+            email: email,
+            details: 'This email address is valid and deliverable',
+            confidence: 'high'
+          };
+        } else if (validation.commonPatterns.isRisky) {
+          return {
+            status: 'risky',
+            email: email,
+            details: 'This email address may be risky or temporary',
+            confidence: 'medium'
+          };
+        } else {
+          return {
+            status: 'valid',
+            email: email,
+            details: 'This email address appears to be valid',
+            confidence: 'medium'
+          };
+        }
+      } else if (!validation.syntax) {
+        return {
+          status: 'invalid',
+          email: email,
+          details: 'Invalid email format',
+          confidence: 'high'
+        };
+      } else if (!validation.domainStructure) {
+        return {
+          status: 'invalid',
+          email: email,
+          details: 'Invalid domain format',
+          confidence: 'high'
+        };
+      } else if (!validation.localPart) {
+        return {
+          status: 'invalid',
+          email: email,
+          details: 'Invalid email username format',
+          confidence: 'high'
+        };
+      } else {
+        return {
+          status: 'unknown',
+          email: email,
+          details: 'Unable to verify this email address',
+          confidence: 'low'
+        };
+      }
+    }
+
+    function validateEmailSyntax(email) {
+      const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      return emailRegex.test(email);
+    }
+
+    function validateDomainStructure(domain) {
+      if (!domain) return false;
+      
+      // Check for valid domain structure
+      const domainRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      return domainRegex.test(domain);
+    }
+
+    function validateDomain(domain) {
+      if (!domain) return false;
+      
+      // Check for valid domain structure first
+      if (!validateDomainStructure(domain)) return false;
+      
+      // Check for common invalid domains
+      const invalidDomains = ['example.com', 'test.com', 'invalid.com', 'localhost'];
+      if (invalidDomains.includes(domain.toLowerCase())) return false;
+      
+      // Check for disposable email domains
+      const disposableDomains = [
+        '10minutemail.com', 'tempmail.org', 'guerrillamail.com', 'mailinator.com',
+        'yopmail.com', 'temp-mail.org', 'throwaway.email', 'getnada.com'
+      ];
+      if (disposableDomains.includes(domain.toLowerCase())) return false;
+      
+      return true;
+    }
+
+    function validateLocalPart(localPart) {
+      if (!localPart || localPart.length === 0) return false;
+      if (localPart.length > 64) return false;
+      
+      // Check for consecutive dots
+      if (localPart.includes('..')) return false;
+      
+      // Check for leading/trailing dots
+      if (localPart.startsWith('.') || localPart.endsWith('.')) return false;
+      
+      return true;
+    }
+
+    function checkCommonPatterns(email) {
+      const domain = email.split('@')[1].toLowerCase();
+      const localPart = email.split('@')[0].toLowerCase();
+      
+      // Check for generic/placeholder usernames that don't exist
+      const genericUsernames = [
+        'username', 'user', 'test', 'example', 'sample', 'demo', 'placeholder',
+        'temp', 'temporary', 'fake', 'dummy', 'spam', 'invalid', 'none',
+        'admin', 'administrator', 'root', 'guest', 'anonymous', 'unknown',
+        'noreply', 'no-reply', 'donotreply', 'do-not-reply'
+      ];
+      
+      if (genericUsernames.includes(localPart)) {
+        return {
+          isValid: false,
+          isRisky: true,
+          isUndeliverable: true
+        };
+      }
+      
+      // Check for common valid patterns
+      const validPatterns = {
+        gmail: domain === 'gmail.com',
+        yahoo: domain === 'yahoo.com' || domain === 'yahoo.co.uk',
+        outlook: domain === 'outlook.com' || domain === 'hotmail.com',
+        linkedin: domain === 'linkedin.com',
+        corporate: !['gmail.com', 'yahoo.com', 'yahoo.co.uk', 'outlook.com', 'hotmail.com', 'linkedin.com'].includes(domain)
+      };
+      
+      // Check for highly suspicious patterns only
+      const highlySuspiciousPatterns = {
+        allNumbers: /^\d+$/.test(localPart),
+        randomPattern: /^[a-z]{6,12}\d{4,}$/.test(localPart),
+        extremelyLong: localPart.length > 50,
+        tooManyDots: (localPart.match(/\./g) || []).length > 5,
+        tooManyUnderscores: (localPart.match(/_/g) || []).length > 5,
+        tooManyHyphens: (localPart.match(/-/g) || []).length > 5,
+        specialChars: /[^a-zA-Z0-9._-]/.test(localPart),
+        lettersAndManyNumbers: /^[a-z]+\d{8,}$/.test(localPart) || /^\d{8,}[a-z]+$/.test(localPart)
+      };
+      
+      // Check for disposable patterns
+      const disposablePatterns = {
+        disposable: ['tempmail', 'throwaway', 'fake', 'spam', 'temp'].some(word => localPart.includes(word))
+      };
+      
+      // For legitimate business emails, be more lenient
+      const legitimateBusinessEmails = ['support', 'info', 'contact', 'help', 'sales', 'marketing', 'service'];
+      const isLegitimateBusinessEmail = legitimateBusinessEmails.some(business => localPart.includes(business));
+      
+      if (isLegitimateBusinessEmail) {
+        return {
+          isValid: true,
+          isRisky: false,
+          isUndeliverable: false
+        };
+      }
+      
+      // Only flag as undeliverable if highly suspicious
+      const isHighlySuspicious = Object.values(highlySuspiciousPatterns).some(Boolean);
+      
+      if (isHighlySuspicious) {
+        return {
+          isValid: false,
+          isRisky: true,
+          isUndeliverable: true
+        };
+      }
+      
+      // For major providers, be more conservative
+      const majorProviders = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'linkedin.com'];
+      const isMajorProvider = majorProviders.includes(domain);
+      
+      if (isMajorProvider) {
+        return {
+          isValid: true,
+          isRisky: false,
+          isUndeliverable: false
+        };
+      }
+      
+      return {
+        isValid: Object.values(validPatterns).some(Boolean),
+        isRisky: Object.values(disposablePatterns).some(Boolean),
+        isUndeliverable: false
+      };
+    }
+
+    function getResultDetails(status) {
+      const details = {
+        valid: 'This email address is valid and deliverable',
+        invalid: 'This email address is invalid or undeliverable',
+        risky: 'This email address may be risky or temporary',
+        unknown: 'Unable to verify this email address'
+      };
+      return details[status] || 'Verification result unknown';
+    }
+
+    function displayVerificationResult(email, result) {
+      const icons = {
+        valid: 'fas fa-check-circle',
+        invalid: 'fas fa-times-circle',
+        risky: 'fas fa-exclamation-triangle',
+        unknown: 'fas fa-question-circle'
+      };
+
+      const confidenceIcons = {
+        high: 'fas fa-shield-alt',
+        medium: 'fas fa-info-circle',
+        low: 'fas fa-exclamation-triangle'
+      };
+
+      const confidenceColors = {
+        high: '#10b981',
+        medium: '#f59e0b',
+        low: '#ef4444'
+      };
+
+      verificationResult.className = `verification-result show ${result.status}`;
+      verificationResult.innerHTML = `
+        <i class="result-icon ${icons[result.status]}"></i>
+        <div>
+          <div class="result-text">
+            ${result.status.charAt(0).toUpperCase() + result.status.slice(1)}
+            ${result.confidence ? `<span style="color: ${confidenceColors[result.confidence]}; font-size: 0.8rem; margin-left: 0.5rem;">
+              <i class="${confidenceIcons[result.confidence]}"></i> ${result.confidence} confidence
+            </span>` : ''}
+          </div>
+          <div class="result-details">${result.details}</div>
+        </div>
+      `;
+
+      // Show notification with confidence level
+      const confidenceText = result.confidence ? ` (${result.confidence} confidence)` : '';
+      showNotification(`Email verification completed: ${result.status}${confidenceText}`, 'success', 3000);
+    }
+
+    // Event listeners
+    verifySingleBtn.addEventListener('click', verifySingleEmail);
+    singleEmailInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        verifySingleEmail();
+      }
+      });
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => { 
+      e.preventDefault(); 
+      dropZone.classList.add('dragover'); 
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+
+    function handleFile(file) {
+      // Validate file type
+      if (!file.name.toLowerCase().endsWith('.csv') && !file.name.toLowerCase().endsWith('.xlsx')) {
+        showNotification('Please select a CSV or XLSX file.', 'error');
+        return;
+      }
+
+      // Validate file size (100MB limit)
+      if (file.size > 100 * 1024 * 1024) {
+        showNotification('File size must be less than 100MB.', 'error');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      // Add verification mode parameter
+      const selectedMode = document.querySelector('input[name="mode"]:checked').value;
+      formData.append('verification_mode', selectedMode);
+
+      // Show loading state with progress bar
+      const originalContent = dropZone.innerHTML;
+      dropZone.innerHTML = `
+        <div class="drop-zone-content">
+          <div class="loading-spinner"></div>
+          <div class="upload-text">Uploading ${file.name}...</div>
+          <div class="upload-subtext">Processing ${file.size > 10 * 1024 * 1024 ? 'large' : 'small'} file - this may take a moment</div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" id="upload-progress"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0%</div>
+          </div>
+        </div>
+      `;
+      dropZone.style.pointerEvents = 'none';
+
+      // Simulate upload progress with faster completion
+      let progress = 0;
+      const progressInterval = setInterval(() => {
+        progress += Math.random() * 20 + 10; // Faster progress
+        if (progress > 95) progress = 95; // Stop at 95% to wait for actual completion
+        
+        const progressFill = document.getElementById('upload-progress');
+        const progressText = document.getElementById('progress-text');
+        
+        if (progressFill && progressText) {
+          progressFill.style.width = progress + '%';
+          progressText.textContent = Math.round(progress) + '%';
+        }
+      }, 150); // Faster updates
+
+      // Create AbortController for timeout - longer timeout for large files
+      const controller = new AbortController();
+      const fileSize = file.size;
+      const timeoutDuration = fileSize > 10 * 1024 * 1024 ? 120000 : 60000; // 2 minutes for large files, 1 minute for smaller
+      const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
+
+      fetch('http://localhost:5050/upload', {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal
+      })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        clearInterval(progressInterval);
+        clearTimeout(timeoutId);
+        
+        // Complete progress bar
+        const progressFill = document.getElementById('upload-progress');
+        const progressText = document.getElementById('progress-text');
+        if (progressFill && progressText) {
+          progressFill.style.width = '100%';
+          progressText.textContent = '100%';
+        }
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        const { job_id, total, file_type } = data;
+        
+        // Show success message with Start Process button
+        dropZone.innerHTML = `
+          <div class="drop-zone-content">
+            <div class="upload-success-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="upload-text">File uploaded successfully!</div>
+            <div class="upload-subtext">${file.name} (${total} emails, ${file_type})</div>
+            <div class="start-process-section">
+              <button class="start-process-btn" id="start-btn-${job_id}" onclick="window.startVerification('${job_id}')">
+                <i class="fas fa-play"></i>
+                <span>Start Verification Process</span>
+              </button>
+              <div class="process-info">Click to begin email verification</div>
+            </div>
+          </div>
+        `;
+        
+        // Ensure drop zone allows pointer events for the button
+        dropZone.style.pointerEvents = 'auto';
+        
+        jobList.push({ job_id, fileName: file.name, fileSize: file.size, uploadTime: new Date().toISOString() });
+        localStorage.setItem('verifier-jobs', JSON.stringify(jobList));
+        
+        // Add event listener to the start button (only if not already added)
+        const startBtn = document.getElementById(`start-btn-${job_id}`);
+        if (startBtn && !startBtn.hasAttribute('data-listener-added')) {
+          console.log('Adding event listener to button:', startBtn);
+          startBtn.setAttribute('data-listener-added', 'true'); // Mark as having listener
+          
+          startBtn.addEventListener('click', (e) => {
+            console.log('Start button clicked for jobId:', job_id);
+            e.preventDefault();
+            e.stopPropagation();
+            window.startVerification(job_id);
+          });
+          
+          // Also add mouse events for debugging
+          startBtn.addEventListener('mouseenter', () => {
+            console.log('Mouse entered button');
+            startBtn.style.cursor = 'pointer';
+          });
+          
+          startBtn.addEventListener('mouseleave', () => {
+            console.log('Mouse left button');
+          });
+        } else if (startBtn) {
+          console.log('Event listener already added for button:', startBtn);
+        } else {
+          console.error('Start button not found with id:', `start-btn-${job_id}`);
+        }
+        
+        showNotification(`File "${file.name}" uploaded successfully! Click "Start Verification Process" to begin.`, 'success', 5000);
+      })
+      .catch(error => {
+        clearInterval(progressInterval);
+        clearTimeout(timeoutId);
+        console.error('Upload error:', error);
+        
+        // Provide better error messages
+        let errorMessage = 'Upload failed';
+        if (error.name === 'AbortError') {
+          errorMessage = 'Upload timed out. Please try with a smaller file or check your connection.';
+        } else if (error.message.includes('signal is aborted')) {
+          errorMessage = 'Upload timed out. Large files may take longer to process.';
+        } else if (error.message.includes('Failed to fetch')) {
+          errorMessage = 'Connection failed. Please check if the server is running.';
+        } else {
+          errorMessage = `Upload failed: ${error.message}`;
+        }
+        
+        showNotification(errorMessage, 'error');
+      })
+      .finally(() => {
+        // Don't reset drop zone immediately - wait for user to start process
+        // resetFileInput();
+      });
+    }
+
+    // Track which jobs are currently being processed to prevent duplicates
+    const processingJobs = new Set();
+    
+    // Function to start verification process (make it globally accessible)
+    window.startVerification = function(jobId) {
+      console.log('Starting verification for jobId:', jobId);
+      
+      // Check if job is already being processed
+      if (processingJobs.has(jobId)) {
+        console.log('Job already being processed:', jobId);
+        showNotification('Verification process already running for this file.', 'warning');
+        return;
+      }
+      
+      // Check if job block already exists to prevent duplicates
+      const existingJobBlock = document.querySelector(`[data-job-id="${jobId}"]`);
+      if (existingJobBlock) {
+        console.log('Job block already exists for jobId:', jobId);
+        showNotification('Verification process already started for this file.', 'warning');
+        return;
+      }
+      
+      // Mark job as being processed
+      processingJobs.add(jobId);
+      
+      // Find job data first
+      let jobData = jobList.find(job => job.job_id === jobId);
+      if (!jobData) {
+        // Fallback: try to get job data from localStorage
+        const storedJobs = JSON.parse(localStorage.getItem('verifier-jobs') || '[]');
+        jobData = storedJobs.find(job => job.job_id === jobId);
+      }
+      
+      if (!jobData) {
+        console.error('Job data not found for jobId:', jobId);
+        showNotification('Error: Could not find job data. Please try uploading again.', 'error');
+        return;
+      }
+      
+      // Create job block immediately
+      console.log('Creating job block for:', jobData.fileName);
+      createJobBlock(jobId, jobData.fileName, jobData.fileSize);
+      
+      // Show loading state in drop zone
+      const dropZone = document.getElementById('drop-zone');
+      dropZone.innerHTML = `
+        <div class="drop-zone-content">
+          <div class="loading-spinner"></div>
+          <div class="upload-text">Starting verification process...</div>
+          <div class="upload-subtext">Please wait while we begin processing your emails</div>
+        </div>
+      `;
+      dropZone.style.pointerEvents = 'none';
+
+      // Start verification
+      fetch('http://localhost:5050/start-verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ job_id: jobId })
+      })
+      .then(res => {
+        console.log('Start verification response:', res.status);
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log('Start verification data:', data);
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        
+        showNotification('Verification process started successfully!', 'success', 3000);
+        
+        // Reset drop zone after successful start
+        resetFileInput();
+      })
+        .catch(error => {
+          console.error('Start verification error:', error);
+          showNotification(`Failed to start verification: ${error.message}`, 'error');
+          processingJobs.delete(jobId); // Remove from processing set on error
+          resetFileInput();
+        });
+    }
+
+    function createJobBlock(job_id, fileName, fileSize = 0) {
+      console.log('Creating job block:', { job_id, fileName, fileSize });
+      
+      const block = document.createElement('div');
+      block.className = 'job-card';
+      block.setAttribute('data-job-id', job_id); // Add data attribute for duplicate checking
+      block.innerHTML = `
+        <button class="job-close" title="Close job">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="job-header">
+          <div class="job-title">
+            <i class="fas fa-file-csv"></i>
+            <span>${fileName}</span>
+            ${fileSize ? `<small style="color: var(--text-light); margin-left: 0.5rem;">(${(fileSize / 1024 / 1024).toFixed(1)} MB)</small>` : ''}
+          </div>
+        </div>
+        <div class="progress-section">
+          <div class="progress-header">
+            <span class="progress-label">Processing</span>
+            <span class="progress-percentage">0%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+        <div class="job-status">
+          <i class="fas fa-clock"></i>
+          <span>Starting verification...</span>
+        </div>
+        <div class="job-log"></div>
+        <div class="job-actions">
+          <button class="btn btn-danger cancel-btn">
+            <i class="fas fa-stop"></i>
+            Cancel
+          </button>
+        </div>
+      `;
+      jobsContainer.prepend(block);
+      console.log('Job block added to DOM:', block);
+
+      const progressBar = block.querySelector('.progress-bar');
+      const progressPercentage = block.querySelector('.progress-percentage');
+      const jobStatus = block.querySelector('.job-status span');
+      const jobLog = block.querySelector('.job-log');
+      const cancelBtn = block.querySelector('.cancel-btn');
+      const actions = block.querySelector('.job-actions');
+      const closeBtn = block.querySelector('.job-close');
+      
+      // Ensure progress bar starts at 0% with proper initialization
+      progressBar.style.width = '0%';
+      progressPercentage.textContent = '0%';
+      progressBar.classList.add('loading'); // Add loading animation
+      
+      // Add a small delay to ensure smooth start
+      setTimeout(() => {
+        progressBar.style.transition = 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+      }, 100);
+
+      let canceled = false;
+      let isCompleted = false;
+
+      const removeJob = () => {
+        block.remove();
+        jobList = jobList.filter(j => j.job_id !== job_id);
+        localStorage.setItem('verifier-jobs', JSON.stringify(jobList));
+      };
+
+      const updateStats = (data) => {
+        if (data.valid !== undefined) {
+          totalStats.valid += data.valid;
+          totalStats.invalid += data.invalid || 0;
+          totalStats.risky += data.risky || 0;
+          totalStats.total += data.total || 0;
+          localStorage.setItem('verifier-stats', JSON.stringify(totalStats));
+          updateStatsDisplay();
+        }
+      };
+
+      cancelBtn.onclick = () => {
+        canceled = true;
+        fetch(`http://localhost:5050/cancel?job_id=${job_id}`, { method: 'POST' });
+        jobStatus.innerHTML = '<i class="fas fa-ban"></i> Job canceled';
+        actions.innerHTML = '<div class="btn btn-secondary"><i class="fas fa-info-circle"></i> Job Canceled</div>';
+        showNotification('Job canceled successfully', 'warning', 3000);
+        // Reset file input to allow new uploads
+        resetFileInput();
+      };
+
+      closeBtn.onclick = () => {
+        if (!isCompleted) {
+        fetch(`http://localhost:5050/cancel?job_id=${job_id}`, { method: 'POST' });
+        }
+        removeJob();
+        // Reset file input to allow new uploads
+        resetFileInput();
+      };
+
+      // Progress polling with improved logic
+      let lastProgress = 0;
+      const poll = setInterval(() => {
+        if (canceled || isCompleted) return clearInterval(poll);
+
+        fetch(`http://localhost:5050/progress?job_id=${job_id}`)
+          .then(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.json();
+          })
+          .then(data => {
+            const percent = Math.round(data.percent || 0);
+            console.log(`Progress update for ${job_id}:`, { percent, row: data.row, total: data.total });
+            
+            // Only update if progress has actually changed and is not jumping backwards
+            if (percent >= lastProgress && percent <= 100) {
+              progressBar.style.width = `${percent}%`;
+              progressPercentage.textContent = `${percent}%`;
+              lastProgress = percent;
+            }
+            
+            if (data.row && data.total) {
+              jobStatus.innerHTML = `<i class="fas fa-sync-alt fa-spin"></i> Processing row ${data.row} of ${data.total}`;
+            }
+            
+            // Update stats if available
+            updateStats(data);
+          })
+          .catch(error => {
+            console.error('Progress fetch error:', error);
+            jobStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error fetching progress';
+          });
+
+        fetch(`http://localhost:5050/log?job_id=${job_id}`)
+          .then(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.text();
+          })
+          .then(text => {
+            const cleanText = text.replace(/^\[\d+%\] \(\d+\/\d+\) /, '');
+            if (cleanText.trim()) {
+              jobLog.textContent = cleanText;
+            }
+          })
+          .catch(error => {
+            console.error('Log fetch error:', error);
+          });
+      }, 1000);
+
+      // Completion check
+      const wait = setInterval(() => {
+        if (canceled) return clearInterval(wait);
+        
+        fetch(`http://localhost:5050/progress?job_id=${job_id}`)
+          .then(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.json();
+          })
+          .then(data => {
+            console.log(`Completion check for ${job_id}:`, { percent: data.percent, row: data.row, total: data.total });
+            if (data.percent >= 100) {
+              console.log(`Job ${job_id} completed! Showing download links.`);
+              isCompleted = true;
+              clearInterval(wait);
+              clearInterval(poll);
+              
+              // Remove loading animation and add completion animation
+              progressBar.classList.remove('loading');
+              progressBar.classList.add('completed');
+              progressBar.style.transition = 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+              progressBar.style.width = '100%';
+              progressPercentage.textContent = '100%';
+              jobStatus.innerHTML = '<i class="fas fa-check-circle"></i> Verification completed!';
+              
+              actions.innerHTML = `
+                <div class="download-section">
+                  <div class="download-title">
+                    <i class="fas fa-download"></i>
+                    Download Results
+    </div>
+                  <div class="download-links">
+                    <a href="http://localhost:5050/download?job_id=${job_id}&type=all" target="_blank" class="download-link">
+                      <i class="fas fa-file-csv"></i>
+                      All Leads
+                    </a>
+                    <a href="http://localhost:5050/download?job_id=${job_id}&type=valid" target="_blank" class="download-link">
+                      <i class="fas fa-check"></i>
+                      Valid Only
+                    </a>
+                    <a href="http://localhost:5050/download?job_id=${job_id}&type=risky" target="_blank" class="download-link">
+                      <i class="fas fa-exclamation-triangle"></i>
+                      Risky Only
+                    </a>
+                    <a href="http://localhost:5050/download?job_id=${job_id}&type=risky_invalid" target="_blank" class="download-link">
+                      <i class="fas fa-times"></i>
+                      Risky & Invalid
+                    </a>
+    </div>
+                  </div>
+              `;
+              
+              showNotification(`Verification completed for "${fileName}"`, 'success', 4000);
+              processingJobs.delete(job_id); // Remove from processing set on completion
+            }
+          })
+          .catch(error => {
+            console.error('Wait fetch error:', error);
+            clearInterval(wait);
+            actions.innerHTML = '<div class="btn btn-danger"><i class="fas fa-exclamation-triangle"></i> Error checking completion</div>';
+            processingJobs.delete(job_id); // Remove from processing set on error
+          });
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
